@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>I have a back bone</title>
+</head>
+<body>
+	<h1>Hello</h1>
+	<div id="name"></div>
+	<br/>
+	<br/>
+    <button id="changeName">Change Name</button>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script src="underscore.js"></script>
+    <script src="backbone.js"></script>
+	<script>
+		$(document).ready(function(){
+		  
+		  Name = Backbone.Model.extend({
+			//Create a model to hold name attribute
+			defaults: {
+				name: 'World'
+			  }
+		  });
+		  
+		  var nameModel= new Name;
+		  //var nameModel= new Name({name: 'World'});
+		  
+		  NameView = Backbone.View.extend({
+			// el - stands for element. Every view has an element associated in which HTML content will be rendered.
+			el: '#name',
+			// It's the first function called when this view it's instantiated.
+			initialize: function(){
+				this.render();
+				this.listenTo(nameModel, "change", this.render);
+			},
+			
+			render: function(){
+				//alert(nameModel.get("name"));
+				$(this.el).html(nameModel.get("name"));
+			}
+		  });
+		  
+		  var nameView = new NameView;
+		  
+		  $('#changeName').click(function(){
+			var newName = prompt("Please Enter Name:");
+			nameModel.set("name", newName);
+			//nameModel.set({"name": newName});
+		  });
+		});
+	</script>
+</body>
+</html>
